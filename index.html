@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>Calculadora</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='main.css'>
+    <script src='main.js'></script>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            display: flex;
+        }
+        input{
+            width: 90%;   
+            height: 50px;
+            background-color: gray;
+            font-size: large;
+            font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+            color: white;
+            border-radius: 10px;
+        }
+        output{
+            background-color: darkgray;
+            height: 100px;
+            line-height: 100px;
+            padding-right: 5px;
+            width: 95%;
+            display: flex;
+            justify-content: right;
+            vertical-align: middle;
+            font-size: 60px;
+        }
+        #calculadora{
+            align-items: center;
+            flex-direction: row;
+            padding-top: 80px;
+            padding-bottom: 80px;
+            width: 100%;
+            min-width: 400px;
+            max-width: 500px;
+            border: 1px solid black;
+            border-radius: 15px;
+            background-color: black;
+            margin: 0 auto;
+        }
+        #linha{
+            padding-left: 5%;
+            padding-right: 5%;
+            display: flex;
+            justify-content: center;
+            
+        }
+        #coluna{
+            padding-top: 5px;
+            padding-bottom: 5px;
+            width: 30%;
+            display: flex;
+            justify-content: center;
+        }        
+    </style>
+</head>
+<body>
+    <div id="calculadora">
+        <div id="linha">
+            <output name="nmOperacao" id="idOperacao" value="" style="height: 80px; font-size: small; vertical-align: middle;"></output>
+        </div>  
+        <div id="linha">
+                <output name="nmResultado" id="idResultado" value="">_</output>
+        </div>  
+        <div id="linha"  style="display: flex; justify-content: right; padding-top: 5px;
+        padding-bottom: 5px;">
+            <input type="button" id="idLimpar" name="nmLimpar" value="LIMPAR" onclick="limpar();" style="width: 120px; background-color: orangered;">
+        </div>
+        <div id="linha">
+            <div id="coluna">
+                <input type="button" id="idSete" name="nmSete" value="7" onclick="informarDados('7');">
+            </div>
+            <div id="coluna">
+                <input type="button" id="idOito" name="nmOito" value="8" onclick="informarDados('8');">
+            </div>
+            <div id="coluna">
+                <input type="button" id="idNove" name="nmNove" value="9" onclick="informarDados('9');">
+            </div>
+            <div id="coluna">
+                <input type="button" id="idDivisao" name="nmDivisao" value="/" onclick="informarDados('/');" style="background-color: yellow; color: black;">
+            </div>
+        </div>  
+        <div id="linha">
+            <div id="coluna">
+                <input type="button" id="idQuatro" name="nmQuatro" value="4" onclick="informarDados('4');">
+            </div>
+            <div id="coluna">
+                <input type="button" id="idCinco" name="nmCinco" value="5" onclick="informarDados('5');">
+            </div>
+            <div id="coluna">
+                <input type="button" id="idSeis" name="nmSeis" value="6" onclick="informarDados('6');">
+            </div>
+            <div id="coluna">
+                <input type="button" id="idMultiplicar" name="nmMultiplicar" value="x"  onclick="informarDados('*');" style="background-color: yellow; color: black;">
+            </div>
+        </div>  
+        <div id="linha">
+            <div id="coluna">
+                <input type="button" id="idUm" name="nmUm" value="1" onclick="informarDados('1');">
+            </div>
+            <div id="coluna">
+                <input type="button" id="idDois" name="nmDois" value="2" onclick="informarDados('2');">
+            </div>
+            <div id="coluna">
+                <input type="button" id="idTres" name="nmTres" value="3" onclick="informarDados('3');">
+            </div>
+            <div id="coluna">
+                <input type="button" id="idSubtrair" name="nmSubtrair" value="-" onclick="informarDados('-');" style="background-color: yellow; color: black;">
+            </div>
+        </div>
+        <div id="linha">
+            <div id="coluna">
+                <input type="button" id="idZero" name="nmZero" value="0" onclick="informarDados('0');">
+            </div>
+            <div id="coluna">
+                <input type="button" id="idPonto" name="nmPonto" value="." onclick="informarDados('.');">
+            </div>
+            <div id="coluna">
+                <input type="button" id="idCalcular" name="nmCalcular" value="Calcular" onclick="informarDados('=');" style="background-color: green; color: black;">
+            </div>
+            <div id="coluna">
+                <input type="button" id="idAdicao" name="nmAdicao" value="+" onclick="informarDados('+');" style="background-color: yellow; color: black;">
+            </div>
+            
+        </div>
+    </div>
+
+    <script>
+        var capturaTela="";
+        var operacao="";
+        var numeroAnterior = "";
+        var numeroAtual = "";
+        var resultadoOperacao = "";
+
+        //Função que captura os botões clicados e mostra na tela;
+        function informarDados(botao){
+
+            //Identifica se o botão apertado é igual a uma operação
+            if((botao == '+') ||  (botao == '-') || (botao == '/') || (botao == '*')){
+                //Testa se já foi realizada alguma operação anteriormente
+                if(operacao == ""){
+                    operacao = botao;
+                    numeroAtual = Number(capturaTela);
+                    capturaTela = "";
+                    document.getElementById("idResultado").value = capturaTela;
+                }
+                //Valida a partir da segunda operação em sequencia
+                else{
+                    //recebe nova operação
+                    operacao = botao;
+                    numeroAnterior = numeroAtual;
+                    numeroAtual = Number(capturaTela);
+                    
+                    //chama a função da operação informada
+                    switch(operacao){
+                        case '+':{
+                            soma(numeroAnterior,numeroAtual);break;
+                            document.getElementById("idResultado").value = numeroAtual;
+                            numeroAnterior = numeroAtual;
+                        }
+
+                        case '-':subtracao(numeroAnterior, numeroAtual);break;
+                        case '*':multiplicacao(numeroAnterior, numeroAtual); break;
+                        case '/':divisao(numeroAnterior, numeroAtual);break;
+                        default: aler('Opção Inválida');break;
+                    }
+                    
+                }
+            }
+            //valida quando solictado o calculo
+            else if(botao == "="){
+                numeroAnterior = numeroAtual;
+                numeroAtual = Number(capturaTela);
+                capturaTela = "";
+
+                if((numeroAnterior != "") && (numeroAtual != "")){
+                    switch(operacao){
+                    case '+':soma(numeroAnterior,numeroAtual);break;
+                    case '-':subtracao(numeroAnterior, numeroAtual);break;
+                    case '*':multiplicacao(numeroAnterior, numeroAtual); break;
+                    case '/':divisao(numeroAnterior, numeroAtual);break;
+                    default: alert('Opção Inválida');break;
+                }
+             }
+            }
+            //grava os numeros informados na tela enquanto nao for informada nenhuma operação
+            else{
+                if(operacao != "")
+                    capturaTela = "";
+
+                capturaTela+=botao;
+                document.getElementById("idResultado").value = capturaTela;
+            }
+        }
+        //funcao que efetua a soma de dois números
+        function soma(numero1, numero2){
+            resultadoOperacao = numero1 + numero2;
+            document.getElementById("idResultado").value = resultadoOperacao;
+            document.getElementById("idOperacao").value = ""+ numero1 + " + " + numero2;
+            numeroAtual = resultadoOperacao;
+        }
+        //funcao que efetua a subtração de dois números
+        function subtracao(numero1, numero2){
+            resultadoOperacao = numero1 - numero2;
+            document.getElementById("idResultado").value = resultadoOperacao;
+            document.getElementById("idOperacao").value = ""+ numero1 + " - " + numero2;
+            numeroAtual = resultadoOperacao;
+        }
+        //funcao que efetua a multiplicação de dois números
+        function multiplicacao(numero1, numero2){
+            resultadoOperacao = numero1 * numero2;
+            document.getElementById("idResultado").value = resultadoOperacao;
+            document.getElementById("idOperacao").value = ""+ numero1 + " * " + numero2;
+            numeroAtual = resultadoOperacao;
+        }
+        //funcao que efetua a divisão de dois números
+        function divisao(numero1, numero2){
+            //testa se o divisor é 0
+            if(numero2==0){
+                resultadoOperacao = 'erro != 0';
+            }
+            else{
+                resultadoOperacao = numero1 / numero2;
+            }
+            document.getElementById("idOperacao").value = ""+ numero1 + " / " + numero2;
+            document.getElementById("idResultado").value = resultadoOperacao;
+            numeroAtual = resultadoOperacao;
+        }
+        //funcao que limpa a tela e os dados capturados
+        function limpar(){
+            capturaTela = "";
+            numeroAnterior = "";
+            numeroAtual = "";
+            operacao = "";
+            document.getElementById("idOperacao").value = "";
+            document.getElementById("idResultado").value = "";
+        }
+
+        
+    </script>
+</body>
+</html>
